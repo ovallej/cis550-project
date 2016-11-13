@@ -50,8 +50,6 @@ def parse_medalists(file) :
 
 	#print(country_codes)
 
-
-
 	file_csv = csv.DictReader(open(file))
 	athlete_id = 1
 	medal_id = 1
@@ -60,17 +58,8 @@ def parse_medalists(file) :
 		if(row[noc] not in country_codes):
 		 continue
 		curr_gender = "Male" if (row[gender] == "Men") else "Female"
-		"""
-		if row[city] not in cities:
-			cities.append(row[city])
-		if row[year] not in years:
-			years.append(row[year])
-		if row[sport] not in sports:
-			sports.append(row[sport])
-		if row[discipline] not in disciplines:
-			disciplines.append(row[discipline])
-		"""
-		#print("HEREHREHERHERHRHHEHEHR")
+
+		#create athlete
 		if row[athlete] not in athletes:
 	
 			athletes.append(row[athlete])
@@ -86,69 +75,56 @@ def parse_medalists(file) :
 							   "_id" : athlete_id, "Country" : country_name }
 			athlete_id+=1
 
-		"""
-		if row[gender] not in genders:
-			genders.append(row[gender])
-		if row[event] not in events:
-			events.append(row[event])
-		if row[event_gender] not in event_genders:
-			event_genders.append(row[event_gender])
-		if row[medal] not in medals:
-			medals.append(row[medal])
-		"""
-		#//print("HEREHREHERHERHEREHREHERHERHRHHEHEHRHEREHREHERHERHRHHEHEHRHRHHEHEHR")
+		#create event
 		event_obj = [row[sport], row[discipline], curr_gender, row[event]]
-
 		if(str(event_obj) not in event_dict):
 			event_dict[str(event_obj)] = {"_id": event_id, "Sport": row[sport], "Discipline": row[discipline], "Event": row[event], "event_gender":curr_gender}
 			event_id+=1
 
+		#create medal
 		medal_obj = [row[sport], row[discipline], curr_gender, row[event], row[medal], row[year]]
-
 		if(str(medal_obj) not in medal_dict):
 			medal_obj = [row[sport], row[discipline], row[medal], row[year],]
 			#event id?
-			medal_dict[str(medal_obj)] = {"_id": medal_id, "Medal_color":row[medal], "Year":row[year], "Athlete_id":athlete_id, "Event_id":event_dict[str(event_obj)]}
+			medal_dict[str(medal_obj)] = {"_id": medal_id, "Medal_color":row[medal], "Year":row[year], "Athlete_id":athlete_id, "Event_id":event_dict[str(event_obj)]["_id"]}
 			medal_id+=1
 
-	print("HEREHREHERHERHEREHREHERHERHRHHEHEHRHEREHREHERHERHRHHEHEHRHRHHEHEHR")
-	print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-	print("MEDALS")
-	print(medal_dict)
-	print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-	print("MEDALS")
-	print(event_dict)
-	print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+
+	print("EVENTS")
+	#PRINTS ALL EVENT INSERTIONS
+	"""
+	for key in event_dict:
+		#EVENT_ID, SPORT,	DISCIPLINE,	 EVENT,	EVENT_GENDER
+		print insert_events % (event_dict[key]["_id"],
+								"'" + event_dict[key]["Sport"]+ "'",
+								"'" + event_dict[key]["Discipline"]+ "'",
+								"'" + event_dict[key]["Event"]+ "'",
+								"'" + event_dict[key]["event_gender"].lower() + "'")
+	
+	"""
 	print("ATHLETES")
-	print(athlete_dict)
-
-	print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-
-
-
-
-
-"""
-	print cities
-	print len(cities)
-	print years
-	print len(years)
-	print sports
-	print len(sports)
-	print medals
-	print len(medals)
-	print events
-	print len(events)
-	print disciplines
-	print len(disciplines)
-	print event_genders
-	print len(event_genders)
-	print athletes
-	print len(athletes)
-"""
-
-
-
+	#PRINTS ALL ATHLETE INSERTIONS
+	"""
+	for key in athlete_dict:
+		#ATHLETE_ID	,LAST_NAME, FIRST_NAME,COUNTRY_NAME	,HOMETOWN_ID.GENDER 
+		print insert_athletes % (athlete_dict[key]["_id"],
+								"'" + athlete_dict[key]["Last Name"]+ "'",
+								"'" + athlete_dict[key]["First Name"]+ "'",
+								"'" + athlete_dict[key]["Country"]+ "'",
+								0,
+								"'" + athlete_dict[key]["Gender"].lower() + "'")
+	"""
+	print("MEDALS")
+	#PRINTS ALL MEDAL INSERTIONS
+	"""
+	for key in medal_dict:
+		#MEDAL_ID, YEAR,EVENT_ID, ATHLETE_ID,MEDAL_COLOR
+		print insert_medals % (medal_dict[key]["_id"],
+								medal_dict[key]["Year"],
+								medal_dict[key]["Event_id"],
+								medal_dict[key]["Athlete_id"],
+								"'" + medal_dict[key]["Medal_color"].lower() + "'")
+	"""
 
 
 if __name__ == '__main__' : 
