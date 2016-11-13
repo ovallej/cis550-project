@@ -12,6 +12,10 @@ event = 'Event'
 event_gender = 'Event_gender'
 medal = 'Medal'
 
+country = "Country"
+ccode = "Int Olympic Committee code"
+noc = "NOC"
+
 
 def parse_medalists(file) :
 	cities = []
@@ -26,8 +30,28 @@ def parse_medalists(file) :
 
 
 	dt = {}
+	athlete_dict = {}
+	medal_dict = {}
+	event_dict = {}
+	country_csv = csv.DictReader(open("countrycodes.csv"))
+	country_codes = {}
+	for row in country_csv:
+		#print(row)
+		country_codes[row[ccode]] = row[country]
+
+	#print(country_codes)
+
+
+
 	file_csv = csv.DictReader(open(file))
+	athlete_id = 1
+	medal_id = 1
+	event_id = 1
 	for row in file_csv :
+		if(row[noc] not in country_codes):
+		 continue
+		curr_gender = "Male" if (row[gender] == "Men") else "Female"
+		"""
 		if row[city] not in cities:
 			cities.append(row[city])
 		if row[year] not in years:
@@ -36,8 +60,24 @@ def parse_medalists(file) :
 			sports.append(row[sport])
 		if row[discipline] not in disciplines:
 			disciplines.append(row[discipline])
+		"""
+		#print("HEREHREHERHERHRHHEHEHR")
 		if row[athlete] not in athletes:
+	
 			athletes.append(row[athlete])
+			name = row[athlete];
+			split = name.split(', ')
+			if(len(split) != 2):
+				continue
+			fname = split[1].upper()
+			lname = split[0].upper()
+			#curr_gender = "Male" if (row[gender] == "Men") else "Female"
+			country_name = country_codes[row[noc]]
+			athlete_dict[athlete_id] = {"First Name" : fname, "Last Name" : lname, "Gender" : curr_gender,
+							   "_id" : athlete_id, "Country" : country_name }
+			athlete_id+=1
+
+		"""
 		if row[gender] not in genders:
 			genders.append(row[gender])
 		if row[event] not in events:
@@ -46,7 +86,40 @@ def parse_medalists(file) :
 			event_genders.append(row[event_gender])
 		if row[medal] not in medals:
 			medals.append(row[medal])
+		"""
+		#//print("HEREHREHERHERHEREHREHERHERHRHHEHEHRHEREHREHERHERHRHHEHEHRHRHHEHEHR")
+		event_obj = [row[sport], row[discipline], curr_gender, row[event]]
 
+		if(str(event_obj) not in event_dict):
+			event_dict[str(event_obj)] = {"_id": event_id, "Sport": row[sport], "Discipline": row[discipline], "Event": row[event], "event_gender":curr_gender}
+			event_id+=1
+
+		medal_obj = [row[sport], row[discipline], curr_gender, row[event], row[medal], row[year]]
+
+		if(str(medal_obj) not in medal_dict):
+			medal_obj = [row[sport], row[discipline], row[medal], row[year],]
+			#event id?
+			medal_dict[str(medal_obj)] = {"_id": medal_id, "Medal_color":row[medal], "Year":row[year], "Athlete_id":athlete_id, "Event_id":event_dict[str(event_obj)]}
+			medal_id+=1
+
+	print("HEREHREHERHERHEREHREHERHERHRHHEHEHRHEREHREHERHERHRHHEHEHRHRHHEHEHR")
+	print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+	print("MEDALS")
+	print(medal_dict)
+	print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+	print("MEDALS")
+	print(event_dict)
+	print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+	print("ATHLETES")
+	#print(athlete_dict)
+
+	print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+
+
+
+
+
+"""
 	print cities
 	print len(cities)
 	print years
@@ -63,6 +136,7 @@ def parse_medalists(file) :
 	print len(event_genders)
 	print athletes
 	print len(athletes)
+"""
 
 
 
