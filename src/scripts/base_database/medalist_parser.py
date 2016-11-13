@@ -16,6 +16,15 @@ country = "Country"
 ccode = "Int Olympic Committee code"
 noc = "NOC"
 
+insert_events = "INSERT INTO Events VALUES (%d, %s, %s, %s, %s)"
+insert_events % (2, "'sport'", "'disc'", "'evname'", "'male'")
+#EVENT_ID, SPORT,	DISCIPLINE,	 EVENT,	EVENT_GENDER
+insert_athletes = "INSERT INTO Athlete VALUES (%d, %s, %s, %s, %d, %s)"
+insert_athletes % (2, "'name'", "'ame'", "'count'", 2, "'male'")
+#ATHLETE_ID	,LAST_NAME, FIRST_NAME,COUNTRY_NAME	,HOMETOWN_ID.GENDER 
+insert_medals = "INSERT INTO Medal VALUES (%d, %d, %d, %d, %s)"
+insert_medals % (1, 2, 3, 4, "'gold'")
+#MEDAL_ID, YEAR,EVENT_ID, ATHLETE_ID,MEDAL_COLOR
 
 def parse_medalists(file) :
 	cities = []
@@ -111,7 +120,7 @@ def parse_medalists(file) :
 	print(event_dict)
 	print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
 	print("ATHLETES")
-	#print(athlete_dict)
+	print(athlete_dict)
 
 	print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
 
