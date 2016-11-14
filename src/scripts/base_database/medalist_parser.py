@@ -1,7 +1,7 @@
 import sys
 import csv
 import optparse
-
+#python medalist_parser.py -d medalists_clean.csv
 city = "City"
 year = "Edition"
 sport = 'Sport'
