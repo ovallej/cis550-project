@@ -92,16 +92,16 @@ def parse_medalists(file) :
 
 	print("EVENTS")
 	#PRINTS ALL EVENT INSERTIONS
-	"""
+
 	for key in event_dict:
 		#EVENT_ID, SPORT,	DISCIPLINE,	 EVENT,	EVENT_GENDER
 		print insert_events % (event_dict[key]["_id"],
-								"'" + event_dict[key]["Sport"]+ "'",
-								"'" + event_dict[key]["Discipline"]+ "'",
-								"'" + event_dict[key]["Event"]+ "'",
-								"'" + event_dict[key]["event_gender"].lower() + "'")
+								"'" + event_dict[key]["Sport"].upper()+ "'",
+								"'" + event_dict[key]["Discipline"].upper()+ "'",
+								"'" + event_dict[key]["Event"].upper()+ "'",
+								"'" + event_dict[key]["event_gender"].lower() + "'") + ";"
 	
-	"""
+
 	print("ATHLETES")
 	#PRINTS ALL ATHLETE INSERTIONS
 	"""
