@@ -1,6 +1,5 @@
 import cx_Oracle
 username = 'cis550project'
-password = 'Obstacle123'
 
 cis550project.cksgc6f8zhlj.us-east-1.rds.amazonaws.com:1521
 #host = 'cis550project.cc4zli6er8qm.us-west-2.rds.amazonaws.com'
